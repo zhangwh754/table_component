@@ -8,6 +8,8 @@
 # 示例小程序
 ![小程序图片](https://mmbiz.qpic.cn/mmbiz_jpg/NNDgcXA2O90eRXGPicjGqcvetdnNgk8icDpnBcxoEtEwSQgibXmib0LnB2icLYGtGlW5NE30N1fn4M0f165MkxcicoOg/0?wx_fmt=jpeg)
 
+示例小程序为原repo的小程序，没有新更新的`sort表格`
+
 # API
 
 ## prop
@@ -27,29 +29,31 @@
 |selectKeys|	勾选的初始值 	| any[] | []| false |
 |generic:action-td|	当列表项内具有操作列，需要在`columns`内添加`type:action`的一项，操作列的内容往往需要自定义，小程序不提供react,vue的`rander函数`，所以使用到了抽象节点，该属性指明抽象节点的组件。操作列位置可以不固定，点击事件由`bindclickaction`触发	| component |undefined | false |
 |isExpand|	控制是否点击展开。 	| boolean | false|false |
-|expandValueKey|	展开信息的key值 	| string | false |
+|expandValueKey|	展开信息的key值 	| string | false ||
 |initExpandValue|	当展开信息为空时的默认提示语 	| string | '暂无信息' |false |
 |expandStyle|	 展开信息的最外层的样式	| string | ''|false |
 |generic:expand-component| 如果展开区域的内容需要自定义，`expandValueKey`设置为空字符串，则切换到组件模式，传一个组件进来，展开区域的点击事件由`bindclickexpand`触发	| component | undefined |false |
 |dynamicValue|	给自定义内容的动态值，用于改变状态 ，建议{value:放的数据}	| object | {} |false |
-  
-  
+|sortedKeys|	需要sorted的keys组成的数组	| string[] | [] |false |
+
+
 ## event
 
 |事件 | 解释| 类型|
 |-----|-----|-----|
-|bindclicklistitem| 点击列表行事件  |Function(e);  e.detail.value = {index:number（当前行序号）,item: any（当前行的内容）}|  
-|bindclickexpand| 点击展开内容事件  |Function(e); e.detail.value = {type:(这个按钮的含义字段，如‘close’),index:(当前的行),item:(当前行的数据)};(这是我这里定义的结构，具体可以自己定义在expand-component里)}|  
-|bindclickaction| 点击抽象节点事件 |Function(e); e.detail.value = {type:(这个按钮的含义字段，如‘close’),index:(当前的行),item:(当前行的数据)};(这是我这里定义的结构，具体可以自己定义在action-td里)}|  
-|bindonactionevent| 抽象节点内的业务事件触发 |Function(e); e.detail.value = {type:(这个按钮的含义字段，如‘close’),index:(当前的行),item:(当前行的数据)};(这是我这里定义的结构，具体可以自己定义在action-td里)}|  
-|bindcheckkey| 勾选事件 返回被勾选项的rowKey数组 |Function(e); e.detail.value = any[]//(数组内每一项是rowKey字段定义的数据的toString()结果)|  
-|bindscrolltolower| 滚动触底 | Function() |  
+|bindclicklistitem| 点击列表行事件  |Function(e);  e.detail.value = {index:number（当前行序号）,item: any（当前行的内容）}|
+|bindclickexpand| 点击展开内容事件  |Function(e); e.detail.value = {type:(这个按钮的含义字段，如‘close’),index:(当前的行),item:(当前行的数据)};(这是我这里定义的结构，具体可以自己定义在expand-component里)}|
+|bindclickaction| 点击抽象节点事件 |Function(e); e.detail.value = {type:(这个按钮的含义字段，如‘close’),index:(当前的行),item:(当前行的数据)};(这是我这里定义的结构，具体可以自己定义在action-td里)}|
+|bindonactionevent| 抽象节点内的业务事件触发 |Function(e); e.detail.value = {type:(这个按钮的含义字段，如‘close’),index:(当前的行),item:(当前行的数据)};(这是我这里定义的结构，具体可以自己定义在action-td里)}|
+|bindcheckkey| 勾选事件 返回被勾选项的rowKey数组 |Function(e); e.detail.value = any[]//(数组内每一项是rowKey字段定义的数据的toString()结果)|
+|bindscrolltolower| 滚动触底 | Function() |
 |bindscrolltoupper| 滚动触顶 | Function() |
+|bindsortaction| 接收到排序事件 | Function(e); e.detail.value = {type: 'descending' \| 'ascending' \| '', key: (点击的列的key)} |
 
-## column  
+## column
 列描述数据对象，是 columns 中的一项，Column 使用相同的 API。
-    
-|事件 | 解释| 类型| 必填|  
+
+|事件 | 解释| 类型| 必填|
 |-----|-----|-----|-----|
 |title|字段名中文含义|string| true|
 |key|字段名|string| true|

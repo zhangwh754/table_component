@@ -235,8 +235,8 @@ Component({
                         sort: "descending",
                     });
                     this.triggerEvent("sortaction", {
-                        type: data.key,
-                        key: "descending",
+                      key: data.key,
+                      type: "descending",
                     });
                 }
                 else {

@@ -350,8 +350,8 @@ Component<InitData, InitProperty, InitMethod>({
 
           // 发送需要传递给后端的key和type
           this.triggerEvent("sortaction", {
-            type: data.key,
-            key: "descending",
+            key: data.key,
+            type: "descending",
           });
         }
         // 激活的key和点击的key相同
