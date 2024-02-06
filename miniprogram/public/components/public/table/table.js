@@ -22,51 +22,51 @@ Component({
     properties: {
         rowKey: {
             type: String,
-            value: 'id'
+            value: "id",
         },
         tableHeight: {
             type: String,
-            value: '600rpx',
+            value: "600rpx",
         },
         scrollX: {
             type: Boolean,
-            value: false
+            value: false,
         },
         columns: {
             type: Array,
-            value: []
+            value: [],
         },
         dataList: {
             type: Array,
-            value: []
+            value: [],
         },
         getListLoading: {
             type: Boolean,
-            value: false
+            value: false,
         },
         showTipImage: {
             type: Boolean,
-            value: false
+            value: false,
         },
         tipTitle: {
             type: String,
-            value: '提示'
+            value: "提示",
         },
         tipSubtitle: {
             type: String,
-            value: '暂无数据'
+            value: "暂无数据",
         },
         select: {
             type: Boolean,
-            value: false
+            value: false,
         },
         selectKeys: {
             type: Array,
-            value: []
+            value: [],
         },
         isExpand: {
             type: Boolean,
-            value: false
+            value: false,
         },
         expandValueKey: {
             type: String,
@@ -80,20 +80,26 @@ Component({
         dynamicValue: {
             type: Object,
             optionalTypes: [Array, String, Number, Boolean, null],
-            value: {}
+            value: {},
+        },
+        sortedKeys: {
+            type: Array,
+            value: [],
         },
     },
     data: {
-        tableScrollViewHeight: '0rpx',
+        tableScrollViewHeight: "0rpx",
         scrollTop: 0,
         scrollLeftHeader: 0,
         scrollLeftContent: 0,
         scrollTag: null,
-        touchStatus: 'end',
+        touchStatus: "end",
         checkObj: {},
+        sortedKey: "",
+        sort: "",
     },
     observers: {
-        'dataList': function (dataList) {
+        dataList: function (dataList) {
             if (dataList && dataList.length > 0) {
                 this.createShowDataList();
             }
@@ -101,23 +107,23 @@ Component({
                 this.setScrollTop();
             }
         },
-        'selectKeys': function (selectKeys) {
+        selectKeys: function (selectKeys) {
             const newCheckObj = {};
-            selectKeys.forEach(item => {
+            selectKeys.forEach((item) => {
                 newCheckObj[item] = true;
             });
             this.setData({
-                checkObj: newCheckObj
+                checkObj: newCheckObj,
             });
         },
-        'tableHeight': function () {
+        tableHeight: function () {
             this.getTableScrollViewHeight();
-        }
+        },
     },
     methods: {
         createShowDataList() {
             const { columns, dataList, rowKey } = this.data;
-            const needReaderColums = columns.filter(item => item.render);
+            const needReaderColums = columns.filter((item) => item.render);
             this.setData({
                 showDataList: dataList.map((item, index) => {
                     let newItem = Object.assign({}, item, { row_key: `${item[rowKey]}` });
@@ -125,12 +131,12 @@ Component({
                         newItem[item1.key] = item1.render(newItem[item1.key], item, index, getNowPage().data);
                     });
                     return newItem;
-                })
+                }),
             });
         },
         setScrollTop() {
             this.setData({
-                scrollTop: 0
+                scrollTop: 0,
             });
         },
         setScrollLeft(e) {
@@ -139,23 +145,23 @@ Component({
             const { scrollTag } = this.data;
             if (tag !== scrollTag)
                 return;
-            if (tag === 'header') {
+            if (tag === "header") {
                 this.setData({
-                    scrollLeftContent: scrollLeft
+                    scrollLeftContent: scrollLeft,
                 });
             }
-            else if (tag === 'content') {
+            else if (tag === "content") {
                 this.setData({
-                    scrollLeftHeader: scrollLeft
+                    scrollLeftHeader: scrollLeft,
                 });
             }
         },
         clearScrollTag: debounce(function (e) {
             const { touchStatus } = this.data;
-            if (touchStatus === 'start')
+            if (touchStatus === "start")
                 return;
             this.setData({
-                scrollTag: null
+                scrollTag: null,
             });
         }, 100),
         handleScroll(e) {
@@ -163,7 +169,7 @@ Component({
             if (!scrollX)
                 return;
             this.setScrollLeft(e);
-            if (touchStatus === 'end') {
+            if (touchStatus === "end") {
                 this.clearScrollTag(e);
             }
         },
@@ -171,11 +177,11 @@ Component({
             const { scrollX, scrollTag, touchStatus } = this.data;
             if (!scrollX)
                 return;
-            if (scrollTag || touchStatus === 'start')
+            if (scrollTag || touchStatus === "start")
                 return;
             const { tag } = e.currentTarget.dataset;
             this.setData({
-                touchStatus: 'start',
+                touchStatus: "start",
                 scrollTag: tag,
             });
         },
@@ -187,37 +193,72 @@ Component({
             if (tag !== scrollTag)
                 return;
             this.setData({
-                touchStatus: 'end'
+                touchStatus: "end",
             });
         },
         handleScrolltolower() {
             const { showTipImage } = this.data;
             if (showTipImage)
                 return;
-            this.triggerEvent('scrolltolower');
+            this.triggerEvent("scrolltolower");
         },
         handleScrolltoupper() {
-            this.triggerEvent('scrolltoupper');
+            this.triggerEvent("scrolltoupper");
         },
         handleClickListItem(e) {
-            this.triggerEvent('clicklistitem', {
-                value: e.detail.value
+            this.triggerEvent("clicklistitem", {
+                value: e.detail.value,
             });
         },
         handleClickAction(e) {
-            this.triggerEvent('clickaction', {
-                value: e.detail.value
+            this.triggerEvent("clickaction", {
+                value: e.detail.value,
             });
         },
         handleOnActionEvent(e) {
-            this.triggerEvent('onactionevent', {
-                value: e.detail.value
+            this.triggerEvent("onactionevent", {
+                value: e.detail.value,
             });
         },
         handleClickExpand(e) {
-            this.triggerEvent('clickexpand', {
-                value: e.detail.value
+            this.triggerEvent("clickexpand", {
+                value: e.detail.value,
             });
+        },
+        triggerThSort(e) {
+            const data = e.currentTarget.dataset;
+            if (this.data.sortedKeys.length > 0 &&
+                this.data.sortedKeys.includes(data.key)) {
+                if (data.key !== this.data.sortedKey) {
+                    this.setData({
+                        sortedKey: data.key,
+                        sort: "descending",
+                    });
+                    this.triggerEvent("sortaction", {
+                        type: data.key,
+                        key: "descending",
+                    });
+                }
+                else {
+                    let newSort = "";
+                    if (data.sort === "") {
+                        newSort = "descending";
+                    }
+                    else if (data.sort === "descending") {
+                        newSort = "ascending";
+                    }
+                    else {
+                        newSort = "";
+                    }
+                    this.setData({
+                        sort: newSort,
+                    });
+                    this.triggerEvent("sortaction", {
+                        type: newSort,
+                        key: data.key,
+                    });
+                }
+            }
         },
         handleClickCheck(e) {
             const { item } = e.detail.value;
@@ -225,7 +266,7 @@ Component({
             const newCheckObj = Object.assign({}, checkObj);
             newCheckObj[item[rowKey]] = !newCheckObj[item[rowKey]];
             this.setData({
-                checkObj: newCheckObj
+                checkObj: newCheckObj,
             }, () => {
                 const value = [];
                 for (let i in newCheckObj) {
@@ -233,8 +274,8 @@ Component({
                         value.push(i);
                     }
                 }
-                this.triggerEvent('checkkey', {
-                    value
+                this.triggerEvent("checkkey", {
+                    value,
                 });
             });
         },
@@ -242,12 +283,14 @@ Component({
             try {
                 const { tableHeight } = this.data;
                 const pageConfig = wx.getSystemInfoSync();
-                const node = this.createSelectorQuery().select('.tr-th');
-                node.boundingClientRect((rect) => {
+                const node = this.createSelectorQuery().select(".tr-th");
+                node
+                    .boundingClientRect((rect) => {
                     this.setData({
-                        tableScrollViewHeight: `calc(${tableHeight} - ${rect.height * pageConfig.pixelRatio}rpx)`
+                        tableScrollViewHeight: `calc(${tableHeight} - ${rect.height * pageConfig.pixelRatio}rpx)`,
                     });
-                }).exec();
+                })
+                    .exec();
             }
             catch (e) {
                 console.log(e);
@@ -256,12 +299,12 @@ Component({
         tipFc() {
             const { rowKey, columns } = this.data;
             if (!rowKey) {
-                console.error('table组件必须指明每一行的唯一标识的字段名，且必须为字符串，数字将会被转为字符串,for循环中的wx:key不使用该字段，用的是createShowDataList中设置的row_key字段');
+                console.error("table组件必须指明每一行的唯一标识的字段名，且必须为字符串，数字将会被转为字符串,for循环中的wx:key不使用该字段，用的是createShowDataList中设置的row_key字段");
             }
             if (!columns) {
-                console.error('table组件必须指明columns');
+                console.error("table组件必须指明columns");
             }
-        }
+        },
     },
     lifetimes: {
         attached: function () {

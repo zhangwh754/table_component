@@ -38,3 +38,6 @@
 <layout title="columns" desc="">
   <columns></columns>
 </layout>
+<layout title="排序" desc="传入sortedKeys数组，是需要sort字段key的数组。监听bindclicklistitem，接收到排序的类型和key名称">
+  <sorted></sorted>
+</layout>

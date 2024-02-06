@@ -1,73 +1,135 @@
-page, view, scroll-view, swiper, movable-area, cover-view, text, icon, rich-text,
-progress, button, checkbox-group, checkbox, form, input, label, picker,
-picker-view, radio-group, slider, switch, textarea, navigator, audio, image,
-video, live-player, live-pusher, open-data, web-view {
+page,
+view,
+scroll-view,
+swiper,
+movable-area,
+cover-view,
+text,
+icon,
+rich-text,
+progress,
+button,
+checkbox-group,
+checkbox,
+form,
+input,
+label,
+picker,
+picker-view,
+radio-group,
+slider,
+switch,
+textarea,
+navigator,
+audio,
+image,
+video,
+live-player,
+live-pusher,
+open-data,
+web-view {
   box-sizing: border-box;
 }
-.list{
+.list {
   position: relative;
   background-color: #fff;
   overflow: hidden;
-  .tip-image-block{
+  .tip-image-block {
     width: 100%;
     height: 100%;
-    .icon{
+    .icon {
       width: 270rpx;
       height: 209rpx;
       margin-bottom: 40rpx;
     }
-    .title{
+    .title {
       margin-bottom: 30rpx;
       font-size: 32rpx;
       color: #333;
       font-weight: bold;
     }
-    .subtitle{
+    .subtitle {
       font-size: 28rpx;
       color: #a2a2a2;
       letter-spacing: 4rpx;
     }
   }
-
 }
 
 // 表格数据
-.table-header{
-  overflow: hidden; 
+.table-header {
+  overflow: hidden;
   white-space: nowrap;
-  .inline-block{
+  .inline-block {
     display: inline-block;
     min-width: 100%;
   }
-  .tr{
+  .tr {
     display: flex;
-    border-bottom: 2rpx solid #DDDDDD;
-    .th{
+    border-bottom: 2rpx solid #dddddd;
+    .th {
       display: flex;
       flex-flow: wrap;
       justify-content: center;
       align-items: center;
       padding: 35rpx 10rpx;
       font-size: 28rpx;
-      white-space:normal; 
-      word-break:break-all;
-      color: #333; 
+      white-space: normal;
+      word-break: break-all;
+      color: #333;
       font-weight: bold;
 
-      &.select{
+      &.select {
         width: 60rpx;
-        padding: 0 1rpx; 
+        padding: 0 1rpx;
+      }
+
+      &.sortable {
+        display: flex;
+        align-items: center;
+
+        .arrows {
+          display: flex;
+          flex-direction: column;
+          margin-left: 2rpx;
+
+          .arrow {
+            display: inline-block;
+            margin: 2rpx 0;
+            width: 0;
+            height: 0;
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+
+            &.up {
+              border-bottom: 5px solid black; /* 显示向上箭头 */
+            }
+            &.down {
+              border-top: 5px solid black; /* 显示向上箭头 */
+            }
+          }
+        }
+      }
+
+      &.sortable[data-sort="ascending"] {
+        .arrow {
+          border-bottom-color: #3877F5 !important;
+        }
+      }
+      &.sortable[data-sort="descending"] {
+        .arrow {
+          border-top-color: #3877F5 !important;
+        }
       }
     }
   }
-  
 }
 
-.scroll-view{
-  overflow: hidden; 
+.scroll-view {
+  overflow: hidden;
   white-space: nowrap;
-  .table-content{
+  .table-content {
     display: inline-block;
     min-width: 100%;
-  } 
+  }
 }
